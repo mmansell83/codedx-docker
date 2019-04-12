@@ -11,31 +11,38 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-version: '2'
+version: '3.2'
 services:
     codedx-db:
         image: mariadb:10.3.13
         environment:
-            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_pass
             - MYSQL_DATABASE=codedx
         volumes:
             - codedx-db-files:/var/lib/mysql
         command: --optimizer_search_depth=0 --innodb_flush_log_at_trx_commit=0
+        secrets:
+           - mysql_root_pass
     codedx-tomcat:
-        image: codedx/codedx-tomcat:v3.7.0
+        image: se2/codedx-tomcat:3.7.0
         environment:
             - DB_URL=jdbc:mysql://codedx-db/codedx
             - DB_DRIVER=com.mysql.jdbc.Driver
             - DB_USER=root
-            - DB_PASSWORD=root
+            - DB_PASSWORD=mysql_root_pass
             - SUPERUSER_NAME=admin
             - SUPERUSER_PASSWORD=secret
         volumes:
             - codedx-appdata:/opt/codedx
         ports:
             - 8080:8080
+        secrets:
+            - mysql_root_pass
         depends_on:
             - codedx-db
+secrets:
+    mysql_root_pass:
+       external: true
 volumes:
     codedx-db-files:
     codedx-appdata:
