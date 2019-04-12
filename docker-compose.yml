@@ -29,19 +29,24 @@ services:
             - DB_URL=jdbc:mysql://codedx-db/codedx
             - DB_DRIVER=com.mysql.jdbc.Driver
             - DB_USER=root
-            - DB_PASSWORD=mysql_root_pass
+#            - DB_PASSWORD=mysql_root_pass
+            - DB_PASS_SECRET=mysql_root_pass
             - SUPERUSER_NAME=admin
-            - SUPERUSER_PASSWORD=secret
+#            - SUPERUSER_PASSWORD=secret
+            - SUPERUSER_PASS_SECRET=su_pass
         volumes:
             - codedx-appdata:/opt/codedx
         ports:
             - 8080:8080
         secrets:
             - mysql_root_pass
+            - su_pass
         depends_on:
             - codedx-db
 secrets:
     mysql_root_pass:
+       external: true
+    su_pass:
        external: true
 volumes:
     codedx-db-files:

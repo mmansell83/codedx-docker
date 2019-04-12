@@ -40,9 +40,9 @@ edit_config () {
 	fi
 	sed -i "s|swa.db.user =|$SEDDBUSER|" templates/codedx.props
 	#populate password
-        if [ -f "/run/secrets/${DB_PASSWORD}" ]
+        if [ -f "/run/secrets/${DB_PASS_SECRET}" ]
         then
-                SEDDBPASS="swa.db.password = `cat /run/secrets/${DB_PASSWORD}`"
+                SEDDBPASS="swa.db.password = `cat /run/secrets/${DB_PASS_SECRET}`"
 	elif [ -z "$DB_PASSWORD" ]
 	then
 		SEDDBPASS="swa.db.password = root"
@@ -114,7 +114,10 @@ then
 	fi
 
 	#if the user hasn't specified a root codedx password, default to root	
-	if [ -z "$SUPERUSER_PASSWORD" ]
+        if [ -z "$SU_PASS_SECRET" ] && [ -f "/run/secrets/${SU_PASS_SECRET}" ]
+        then
+                SUPERUSER_PASSWORD=`cat /run/secrets/${SU_PASS_SECRET}`
+	elif [ -z "$SUPERUSER_PASSWORD" ]
 	then
 		SUPERUSER_PASSWORD="secret"
 	fi
