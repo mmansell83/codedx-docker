@@ -16,14 +16,17 @@ This section details how to start up a functional instance of Code Dx using dock
 3. If desired, edit the following values in the `docker-compose.yml` file.
 - The following configuration values affect the database container:
   - MYSQL_ROOT_PASSWORD: The password for MYSQL's root user.
+  - MYSQL_ROOT_PASSWORD_FILE: The password file to utilize Docker Secrets for MYSQL's root user.
   - MYSQL_DATABASE: The name of the database to be created automatically when the container is started.
 - The following configuration values affect the Tomcat based Code Dx container:
   - DB_URL: The url that Code Dx uses to connect to it's database.
   - DB_DRIVER: The jdbc database driver that Code Dx uses.
   - DB_USER: The database user Code Dx connects with.
   - DB_PASSWORD: The password Code Dx connects with.
+  - DB_PASS_SECRET: The docker secret database password Code Dx connects with.
   - SUPERUSER_NAME: The root administrator name for Code Dx.
   - SUPERUSER_PASSWORD: The password for the Code Dx root administrator.
+  - SU_PASS_SECRET: The docker secret password for the Code Dx root administrator.
   - ports: The list of values underneath this header controls the ports forwarded from the docker instance to the host machine. The left value represents the port bound on the host machine, the right value represents the port bound in the docker container. If there is a port conflict on the host machine, alter the left value.
 4. Run `docker-compose up`. Alternatively, run `docker-compose up -d` to detach and run in the background.
 5. When the message "The Server is now ready!" appears in the console, navigate to http://localhost:8080/codedx to log into your newly spun up Code Dx instance.
