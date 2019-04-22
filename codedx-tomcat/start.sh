@@ -114,7 +114,7 @@ then
 	fi
 
 	#if the user hasn't specified a root codedx password, default to root	
-        if [ -z "$SU_PASS_SECRET" ] && [ -f "/run/secrets/${SU_PASS_SECRET}" ]
+        if [ -f "/run/secrets/${SU_PASS_SECRET}" ]
         then
                 SUPERUSER_PASSWORD=`cat /run/secrets/${SU_PASS_SECRET}`
 	elif [ -z "$SUPERUSER_PASSWORD" ]
